@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0; /* Asegurarse de que no haya márgenes */
+            background-image: url('static/images/encriptacion.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #ffffff; /* Color de la letra para todo el cuerpo */
+
+        }
+        .card {
+            width: 350px;
+            max-width: 90%;
+            padding: 20px;
+            border: 1px solid #ffffffa6;
+            border-radius: 5px;
+            background-color: rgba(28, 72, 74, 0.682); /* Fondo blanco semitransparente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destacar la tarjeta */
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .btn-login {
+            width: 100%;
+        }
+        .btn-register {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 class="text-center mb-4">Iniciar Sesión</h2>
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="usuario">Usuario</label>
+            <input type="text" class="form-control" id="usuario" placeholder="Ingrese su usuario">
+        </div>
+        <div class="form-group">
+            <label for="contrasena">Contraseña</label>
+            <input type="password" class="form-control" id="contrasena" placeholder="Ingrese su contraseña">
+        </div>
+        <button type="submit" class="btn btn-primary btn-login">Iniciar Sesión</button>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-secondary btn-register">Registrarse</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS y jQuery (opcional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const usuario = document.getElementById('usuario').value;
+            const contrasena = document.getElementById('contrasena').value;
+            const isRegister = event.submitter.classList.contains('btn-register');
+            const endpoint = isRegister ? '/register' : '/login';
+
+        // Validar si los campos están vacíos al intentar iniciar sesión
+        if (!isRegister && (!usuario || !contrasena)) {
+            alert('Por favor complete todos los campos.');
+            return;
+        }
+        if (isRegister && (!usuario || !contrasena)) {
+            alert('Por favor complete todos los campos.');
+            return; // Detener la ejecución de la función si faltan campos
+        }
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    usuario: usuario,
+                    contrasena: contrasena
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    if (isRegister) {
+                        alert(data.message + '. Redirigiendo a la página de inicio de sesión.');
+                        window.location.href = '/login';
+                    } else {
+                        alert(data.message + '. Redirigiendo a la página de cifrado.');
+                        window.location.href = '/encrypt';
+                    }
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ha ocurrido un error al intentar iniciar sesión o registrarse.');
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

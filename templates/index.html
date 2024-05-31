@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptador</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; /* Asegurarse de que no haya márgenes */
+            background-image: url('static/images/encriptacion.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            color: #ffffff; /* Color de la letra para todo el cuerpo */
+        }
+        .container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            width: 70%; /* Aumentar el ancho del formulario */
+            height: 80vh; /* Ajustar la altura del formulario */
+            overflow-y: auto;
+            padding: 20px;
+            background-color: rgba(28, 72, 74, 0.682);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        }
+        .btn-encrypt, .btn-decrypt, .btn-generate-key, .btn-logout {
+            margin-top: 10px;
+            background-color: #1c7e5f99; /* Color de fondo personalizado */
+            color: #ffffff; /* Color del texto */
+            border: none; /* Sin borde */
+        }
+        .btn-encrypt:hover, .btn-decrypt:hover, .btn-generate-key:hover, .btn-logout:hover {
+            background-color: #08886f; /* Color de fondo al pasar el ratón */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+        <h1 class="text-center">Encriptador</h1>
+
+        <div class="mb-3">
+            <label for="size" class="form-label">Tamaño de la clave (2-10):</label>
+            <input type="number" class="form-control" id="size" min="2" max="10" value="2">
+        </div>
+        <div class="mb-3">
+            <label for="clave" class="form-label">Clave generada:</label>
+            <input type="text" class="form-control" id="clave" readonly>
+        </div>
+        <button class="btn btn-primary btn-generate-key">
+            <i class="fas fa-key"></i> Generar Clave
+        </button>
+
+        <br>
+        <br>
+        <div class="mb-3">
+            <label for="texto" class="form-label">Texto a encriptar:</label>
+            <input type="text" class="form-control" id="texto">
+        </div>
+        <button class="btn btn-primary btn-encrypt">
+            <i class="fas fa-lock"></i> Encriptar
+        </button>
+
+        <div class="mt-3">
+            <label for="texto_encriptado" class="form-label">Texto encriptado:</label>
+            <textarea class="form-control" id="texto_encriptado" rows="3" readonly></textarea>
+        </div>
+        <br>
+        <button class="btn btn-primary btn-decrypt" disabled>
+            <i class="fas fa-unlock"></i> Desencriptar
+        </button>
+        <div class="mt-3">
+            <label for="texto_desencriptado" class="form-label">Texto desencriptado:</label>
+            <textarea class="form-control" id="texto_desencriptado" rows="3" readonly></textarea>
+        </div>
+        <br>
+        <button class="btn btn-primary" onclick="cerrarSesion()">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="{{ url_for('static', filename='encrypt.js') }}"></script>
+
+<script>
+    function cerrarSesion() {
+        window.location.href = 'login';
+    }
+</script>
+
+</body>
+</html>
